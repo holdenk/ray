@@ -34,7 +34,7 @@ spec:
   containers:
   - name: ray
     imagePullPolicy: Always
-    image: rayproject/ray:nightly
+    image: holdenk/ray-ray:nightly
     command: ["ray-operator"]
     env:
     - name: RAY_OPERATOR_POD_NAMESPACE

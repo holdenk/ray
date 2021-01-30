@@ -40,7 +40,7 @@ spec:
         containers:
         - name: ray-node
           imagePullPolicy: Always
-          image: rayproject/ray:nightly
+          image: holdenk/ray-ray:nightly
           # Do not change this command - it keeps the pod alive until it is
           # explicitly killed.
           command: ["/bin/bash", "-c", "--"]
@@ -71,12 +71,14 @@ spec:
               memory: 512Mi
   - name: worker-node
     # Minimum number of Ray workers of this Pod type.
-    minWorkers: 2
+    minWorkers: 1
     # Maximum number of Ray workers of this Pod type. Takes precedence over minWorkers.
-    maxWorkers: 3
-    # User-specified custom resources for use by Ray.
-    # (Ray detects CPU and GPU from pod spec resource requests and limits, so no need to fill those here.)
-    rayResources: {"foo": 1, "bar": 1}
+    maxWorkers: 10
+    # User-specified custom resources for use by Ray
+    #rayResources: {"Custom1": 1, "is_spot": 1}
+    # Optional commands to run before starting the Ray runtime.
+    #setupCommands:
+    #  - pip install numpy # Example
     podConfig:
       apiVersion: v1
       kind: Pod
@@ -92,7 +94,7 @@ spec:
         containers:
         - name: ray-node
           imagePullPolicy: Always
-          image: rayproject/ray:nightly
+          image: holdenk/ray-ray:nightly
           command: ["/bin/bash", "-c", "--"]
           args: ["trap : TERM INT; sleep infinity & wait;"]
           # This volume allocates shared memory for Ray to use for its plasma
