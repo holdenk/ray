@@ -61,18 +61,20 @@ RUN  export arch=$(uname -m); \
     && $HOME/anaconda3/bin/conda clean -y --all \
     && $HOME/anaconda3/bin/pip install --no-cache-dir \
 	flatbuffers \
-	cython==0.29.0 \
-	numpy==1.15.4 \
-	psutil \
+#	cython==0.29.0 \
+#	numpy==1.15.4 \
+#	psutil \
 	blist \
 	atari-py \
     # blist is needed for numpy (which is re-installed when ray is installed)
     # atari-py is built from source for Python 3.8 (requires g++ & zlib1g-dev)
     # To avoid the following error on Jenkins:
     # AttributeError: 'numpy.ufunc' object has no attribute '__module__'
-    && $HOME/anaconda3/bin/pip uninstall -y dask \
+	&& $HOME/anaconda3/bin/pip uninstall -y dask \
+    # On amd64:
     # We install cmake temporarily to get psutil, blist & atari-py
-    && sudo apt-get autoremove -y cmake g++ zlib1g-dev \
+    # && sudo apt-get autoremove -y cmake g++ zlib1g-dev \
+    # But in arm we need these friends for later parties.
     # Either install kubectl or remove wget
     && (if [ "$AUTOSCALER" = "autoscaler" ]; \
 	then wget -O - -q https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add - \
