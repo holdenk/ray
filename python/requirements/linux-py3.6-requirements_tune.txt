@@ -501,7 +501,7 @@ prometheus-flask-exporter==0.18.1
     # via mlflow
 promise==2.3
     # via wandb
-prompt-toolkit==3.0.13
+prompt-toolkit==3.0.16
     # via
     #   ipython
     #   jupyter-console
