@@ -10,7 +10,7 @@ spec:
       restartPolicy: Never
       containers:
         - name: ray
-          image: rayproject/ray:nightly
+          image: holdenk/ray-ray:nightly
           imagePullPolicy: Always
           command: [ "/bin/bash", "-c", "--" ]
           args:

@@ -1,12 +1,14 @@
 ARG GPU
-FROM rayproject/ray:nightly"$GPU"
+ARG DOCKER_PREFIX
+
+FROM "$DOCKER_PREFIX"ray:nightly"$GPU"
 ARG PYTHON_MINOR_VERSION=7
 
 # We have to uninstall wrapt this way for Tensorflow compatibility
 COPY requirements.txt ./
 COPY requirements_ml_docker.txt ./
 COPY requirements_rllib.txt ./
-COPY requirements_tune.txt ./requirements_tune.txt
+# COPY requirements_tune.txt ./requirements_tune.txt
 
 RUN sudo apt-get update \
     && sudo apt-get install -y gcc \
@@ -17,7 +19,7 @@ RUN sudo apt-get update \
     && $HOME/anaconda3/bin/pip --no-cache-dir install -U -r requirements_ml_docker.txt \
     && $HOME/anaconda3/bin/pip --use-deprecated=legacy-resolver --no-cache-dir install -r requirements.txt \
     && $HOME/anaconda3/bin/pip --no-cache-dir install -r requirements_rllib.txt \
-    && $HOME/anaconda3/bin/pip --no-cache-dir install -r requirements_tune.txt \
+#    && $HOME/anaconda3/bin/pip --no-cache-dir install -r requirements_tune.txt \
     # Remove dataclasses & typing because they are included in Python > 3.6
     && if [ $(python -c 'import sys; print(sys.version_info.minor)') != "6" ]; then \
         $HOME/anaconda3/bin/pip uninstall dataclasses typing -y; fi  \
